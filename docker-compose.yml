@@ -21,13 +21,13 @@ services:
     volumes:
       - mongodbdata:/data/db
 
-  # frontend:
-  #   image: node:12.16.1-alpine
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./frontend/:/usr/src/app
-  #   command: npm install && npm start
+  frontend:
+    image: node:12.16.1-alpine
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./frontend/:/usr/src/app
+    entrypoint: sh /usr/src/app/docker/entrypoint.sh
 
 volumes:
   mongodbdata:
