@@ -55,7 +55,7 @@ const AddOrderView = ({ articles, categories, addOrder }: State) => {
     return (
         <Container maxWidth="sm">
             <Box my={4}>
-                <Button onClick={() => setOpenDialog(true)} variant="contained" color="primary">
+                <Button onClick={() => setOpenDialog(true)} variant="contained" color="secondary">
                     <AddIcon />
                 </Button>
                 <AddOrderEditDialog open={openDialog} setOpen={setOpenDialog} setItem={handleAddItem} />
@@ -63,7 +63,7 @@ const AddOrderView = ({ articles, categories, addOrder }: State) => {
                     style={{ marginLeft: 10 }}
                     onClick={handlePlaceOrder}
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     disabled={orderItems.length === 0}
                 >
                     Place Order

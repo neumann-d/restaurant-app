@@ -5,7 +5,9 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import PersonIcon from '@material-ui/icons/Person';
+import CategoryIcon from '@material-ui/icons/Category';
+import CreateIcon from '@material-ui/icons/Create';
+import FastfoodIcon from '@material-ui/icons/Fastfood';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import React, { useState } from 'react';
 import { Link, Redirect, Route, Switch, useLocation } from 'react-router-dom';
@@ -40,7 +42,7 @@ const App = () => {
     const addOrderPath = '/add-order';
 
     const calculateTabIndex = () => {
-        switch(pathName) {
+        switch (pathName) {
             case articlesPath:
                 return 1;
             case ordersPath:
@@ -50,7 +52,7 @@ const App = () => {
             default:
                 return 0;
         }
-    }
+    };
 
     const calculatedTabIndex = calculateTabIndex();
     const [tabIndex, setTabIndex] = useState(calculatedTabIndex);
@@ -84,7 +86,7 @@ const App = () => {
                                     component={Link}
                                     to={categoriesPath}
                                     className={classes.tab}
-                                    icon={<PersonIcon />}
+                                    icon={<CategoryIcon />}
                                     label="Categories"
                                 />
                                 <Tab
@@ -92,7 +94,7 @@ const App = () => {
                                     component={Link}
                                     to={articlesPath}
                                     className={classes.tab}
-                                    icon={<PersonIcon />}
+                                    icon={<FastfoodIcon />}
                                     label="Articles"
                                 />
                                 <Tab
@@ -108,7 +110,7 @@ const App = () => {
                                     component={Link}
                                     to={addOrderPath}
                                     className={classes.tab}
-                                    icon={<ViewListIcon />}
+                                    icon={<CreateIcon />}
                                     label="New Order"
                                 />
                             </Tabs>

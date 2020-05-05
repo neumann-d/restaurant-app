@@ -46,6 +46,19 @@ export const API = {
         }
         return updatedArticle;
     },
+    importArticles: async (csvContent: string) => {
+        let addedData: { articles: Article[]; categories: Category[] } | null = null;
+        try {
+            const responseArticle = await axios.post(`${baseApiUrl}/articles/import`, { data: csvContent });
+            if (responseArticle.data.error) {
+                throw new Error(responseArticle.data.error);
+            }
+            addedData = responseArticle.data;
+        } catch (e) {
+            console.log(`Error: ${e}`);
+        }
+        return addedData;
+    },
     getArticles: async () => {
         let articles: Article[] = [];
         try {

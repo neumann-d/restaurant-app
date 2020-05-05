@@ -92,6 +92,48 @@ app.post(`/api/${apiVersion}/articles/update`, async (req, res) => {
     }
 });
 
+app.post(`/api/${apiVersion}/articles/import`, async (req, res) => {
+    try {
+        // clear database
+        await mongoose.connection.db.dropDatabase();
+
+        // read csv data
+        const csvContent: string = req.body.data;
+
+        // simple csv parsing (Format: "Name","Price","Category")
+        const regexp = /\"(.*)\",\"(.*)\",\"(.*)\"/g;
+        const parsedLines = Array.from(csvContent.matchAll(regexp));
+
+        for (let i = 1; i < parsedLines.length; ++i) {
+            // skip first header line
+            const line = parsedLines[i];
+            const articleName = line[1];
+            const articlePrice = Number(line[2]);
+            const categoryName = line[3];
+
+            // create new category if not exists
+            let category = null;
+            try {
+                category = await Category.findOne({ name: categoryName });
+            } catch (error) {
+                //
+            }
+            if (!category) {
+                category = await addCategory({ name: categoryName });
+            }
+
+            // create new article
+            await addArticle({ name: articleName, price: articlePrice, category: category._id });
+        }
+
+        const articles = await Article.find({});
+        const categories = await Category.find({});
+        res.send({ articles, categories });
+    } catch (e) {
+        res.send({ error: `${e}` });
+    }
+});
+
 app.get(`/api/${apiVersion}/categories`, async (_, res) => {
     try {
         const categories = await Category.find({});
