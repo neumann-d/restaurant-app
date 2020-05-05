@@ -11,7 +11,7 @@ const app = express();
 const port = 8888; // default port to listen
 const apiVersion = 'v1';
 
-// enable cores (only needed for development where fronted is running on localhost:3000 and backend on localhost:8888)
+// enable cors (only needed for development where fronted is running on localhost:3000 and backend on localhost:8888)
 app.use(cors());
 app.use(bodyParser.json()); // parse application/json
 
@@ -165,5 +165,5 @@ app.post(`/api/${apiVersion}/orders/update`, async (req, res) => {
 
 // start the Express server
 app.listen(port, () => {
-    console.log(`🚀 server started at http://localhost:${port}`);
+    console.log(`🚀 backend server started at http://localhost:${port}`);
 });
