@@ -33,7 +33,6 @@ const ArticleView = ({ articles, categories, addArticle, importArticles }: State
 
     const handleFileUpload = (files: any) => {
         if (files && files.length > 0) {
-
             // read csv upload and send string content to backend
             const file = files[0];
             const reader = new FileReader();
@@ -45,6 +44,32 @@ const ArticleView = ({ articles, categories, addArticle, importArticles }: State
         } else {
             console.log('No file uploaded');
         }
+    };
+
+    const handleFileDownload = async (fileName: string) => {
+        let data = '"Name","Price","Category"\n';
+        try {
+            articles.forEach(article => {
+                const category = categories.find(category => category._id === article.category) || null;
+                data += `"${article.name}","${article.price}","${category?.name || ''}"\n`;
+            });
+        } catch (e) {
+            console.log('error = ', e);
+        }
+
+        const createDownloadLink = (name: string) => {
+            const a = document.createElement('a');
+            document.body.appendChild(a);
+            a.setAttribute('style', 'display: none');
+            const blob = new Blob([data], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = name;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        };
+
+        return createDownloadLink(fileName);
     };
 
     return (
@@ -75,6 +100,14 @@ const ArticleView = ({ articles, categories, addArticle, importArticles }: State
                         Import CSV
                     </Button>
                 </Files>
+                <Button
+                    style={{ marginLeft: 10 }}
+                    onClick={() => handleFileDownload('Export.csv')}
+                    variant="contained"
+                    color="secondary"
+                >
+                    Export CSV
+                </Button>
             </Box>
             <Box my={4}>
                 {articles.map(article => {
