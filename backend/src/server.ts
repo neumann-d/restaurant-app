@@ -23,6 +23,37 @@ app.use(bodyParser.json()); // parse application/json
     });
 })();
 
+// define common functions
+const addArticle = async (input: any) => {
+    const article: IArticle = new Article();
+
+    article.name = String(input.name);
+    if (!article.name) {
+        throw new Error('Name can not be empty');
+    }
+    article.price = Number(input.price);
+    if (article.price < 0) {
+        throw new Error('Price must be >= 0');
+    }
+    if (input.category) {
+        article.category = new mongoose.Types.ObjectId(input.category);
+    }
+    await article.save();
+
+    return article;
+};
+
+const addCategory = async (input: any) => {
+    const category: ICategory = new Category();
+    category.name = String(input.name);
+    if (!category.name) {
+        throw new Error('Name can not be empty');
+    }
+    await category.save();
+
+    return category;
+};
+
 // define REST API
 app.get(`/api/${apiVersion}/articles`, async (_, res) => {
     try {
@@ -35,13 +66,7 @@ app.get(`/api/${apiVersion}/articles`, async (_, res) => {
 
 app.post(`/api/${apiVersion}/articles/add`, async (req, res) => {
     try {
-        const article: IArticle = new Article();
-        article.name = String(req.body.name);
-        article.price = Number(req.body.price);
-        if (req.body.category) {
-            article.category = new mongoose.Types.ObjectId(req.body.category);
-        }
-        await article.save();
+        const article = await addArticle(req.body);
         res.send(article);
     } catch (e) {
         res.send({ error: `${e}` });
@@ -78,9 +103,7 @@ app.get(`/api/${apiVersion}/categories`, async (_, res) => {
 
 app.post(`/api/${apiVersion}/categories/add`, async (req, res) => {
     try {
-        const category: ICategory = new Category();
-        category.name = String(req.body.name);
-        await category.save();
+        const category = await addCategory(req.body);
         res.send(category);
     } catch (e) {
         res.send({ error: `${e}` });
