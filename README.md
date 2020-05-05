@@ -15,3 +15,5 @@ Stop:
 ```
 $ docker-compose rm -s -f -v
 ```
+
+Initial data can be imported in UI's Article Tab from provided `Article.csv` file.
