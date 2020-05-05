@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "allowJs": true,
+    "outDir": "./dist",
+    "target": "es5",
+    "lib": ["es2020.string", "dom"]
+  },
+  "include": ["./src/**/*"]
+}
